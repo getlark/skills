@@ -7,7 +7,7 @@ argument-hint: "[resource] [action] [args...]"
 
 # manage
 
-Inspect and mutate getlark resources via the `larkci` CLI, then render JSON output as a readable table for the user. Applies to: workflows, workflow-groups, secret-contexts, executions, repairs, generations, and events.
+Inspect and mutate getlark resources via the `getlark` CLI, then render JSON output as a readable table for the user. Applies to: workflows, workflow-groups, secret-contexts, executions, repairs, generations, and events.
 
 ## Resource/action matrix
 
@@ -31,14 +31,14 @@ Examples:
 
 | User request | Command |
 |---|---|
-| "list my workflows" | `larkci workflows list --limit 100` |
-| "show workflow wf_abc" | `larkci workflows get wf_abc` |
-| "archive that workflow" | `larkci workflows archive <id>` (confirm first) |
-| "rename workflow X to Y" | `larkci workflows update <id> --name "Y"` |
-| "list workflow groups" | `larkci workflow-groups list` |
-| "what secrets are in the staging context" | `larkci secret-contexts get staging` |
-| "show last execution of wf_abc" | `larkci workflows executions list wf_abc --limit 1` → `executions get` |
-| "show repair history for wf_abc" | `larkci workflows repairs list wf_abc` |
+| "list my workflows" | `getlark workflows list --limit 100` |
+| "show workflow wf_abc" | `getlark workflows get wf_abc` |
+| "archive that workflow" | `getlark workflows archive <id>` (confirm first) |
+| "rename workflow X to Y" | `getlark workflows update <id> --name "Y"` |
+| "list workflow groups" | `getlark workflow-groups list` |
+| "what secrets are in the staging context" | `getlark secret-contexts get staging` |
+| "show last execution of wf_abc" | `getlark workflows executions list wf_abc --limit 1` → `executions get` |
+| "show repair history for wf_abc" | `getlark workflows repairs list wf_abc` |
 
 If the user refers to a resource by name (not ID), resolve via the corresponding `list` call first.
 

@@ -1,13 +1,13 @@
 ---
 name: create-workflow
-description: This skill should be used when the user asks to "create a workflow", "create a getlark test", "add an end-to-end test", "author a larkci workflow", or runs `/getlark:create-workflow`. Converts a natural-language test description (target URL + ordered steps) into a `larkci workflows create` invocation with an auto-generated name.
+description: This skill should be used when the user asks to "create a workflow", "create a getlark test", "add an end-to-end test", "author a larkci workflow", or runs `/getlark:create-workflow`. Converts a natural-language test description (target URL + ordered steps) into a `getlark workflows create` invocation with an auto-generated name.
 allowed-tools: Bash, AskUserQuestion
 argument-hint: "[description]"
 ---
 
 # create-workflow
 
-Turn a short natural-language test description into a new getlark workflow. The user supplies the description (target URL + steps). This skill derives a concise workflow name, surfaces optional settings (mode, secret contexts, group), and calls `larkci workflows create`.
+Turn a short natural-language test description into a new getlark workflow. The user supplies the description (target URL + steps). This skill derives a concise workflow name, surfaces optional settings (mode, secret contexts, group), and calls `getlark workflows create`.
 
 ## Inputs
 
@@ -38,8 +38,8 @@ Show the derived name to the user before creating. Offer to accept or override.
 Ask only the questions that matter for this workflow. Skip the rest.
 
 - **Mode** — default `ai_driven`. Only ask if the user mentioned "deterministic", "scripted", "locked", or similar.
-- **Secret contexts** — ask if the description references credentials, API tokens, or anything named in quotes that looks like a context (e.g., "the `staging` credentials"). Offer to list existing contexts via `larkci secret-contexts list`.
-- **Group** — ask if the user has mentioned organizing tests, or if `larkci workflow-groups list` has existing groups. Otherwise skip.
+- **Secret contexts** — ask if the description references credentials, API tokens, or anything named in quotes that looks like a context (e.g., "the `staging` credentials"). Offer to list existing contexts via `getlark secret-contexts list`.
+- **Group** — ask if the user has mentioned organizing tests, or if `getlark workflow-groups list` has existing groups. Otherwise skip.
 
 Use AskUserQuestion for a single batched prompt when more than one optional field is in play.
 
@@ -48,7 +48,7 @@ Use AskUserQuestion for a single batched prompt when more than one optional fiel
 Build the command with properly quoted arguments:
 
 ```bash
-larkci workflows create \
+getlark workflows create \
   --name "<derived name>" \
   --description "<full description>" \
   [--mode deterministic] \
@@ -68,13 +68,13 @@ The CLI prints the new workflow JSON to stdout. Extract and report:
 - `status` (will typically be `pending_generation` initially)
 - Link: `https://dashboard.getlark.ai/workflows/<id>`
 
-Tell the user the workflow is now queued for generation and suggest they run `/getlark:invoke-workflow` once the workflow status reaches `active` (or `generation_successful`). They can check status via `larkci workflows get <id>`.
+Tell the user the workflow is now queued for generation and suggest they run `/getlark:invoke-workflow` once the workflow status reaches `active` (or `generation_successful`). They can check status via `getlark workflows get <id>`.
 
 ## Failure modes
 
 - **`--name` or `--description` missing**: the CLI hard-errors. This skill must always supply both.
-- **Unknown `--group-id`**: verify with `larkci workflow-groups list` before passing.
-- **Unknown `--secret-contexts` name**: verify with `larkci secret-contexts list`. The API will reject unknown contexts.
+- **Unknown `--group-id`**: verify with `getlark workflow-groups list` before passing.
+- **Unknown `--secret-contexts` name**: verify with `getlark secret-contexts list`. The API will reject unknown contexts.
 
 ## Example
 
@@ -84,7 +84,7 @@ Derive: name = "Signup Flow Confirmation"
 
 Run:
 ```bash
-larkci workflows create \
+getlark workflows create \
   --name "Signup Flow Confirmation" \
   --description "Go to https://app.example.com/signup, fill the form with a new email, submit, verify confirmation email message appears."
 ```
