@@ -1,7 +1,7 @@
 {
   "name": "getlark",
   "version": "0.1.0",
-  "description": "Onboard to getlark.ai — create, invoke, and manage end-to-end test workflows via the larkci CLI",
+  "description": "Onboard to getlark.ai — create, invoke, and manage end-to-end test workflows via the getlark CLI",
   "author": {
     "name": "Lark",
     "email": "support@getlark.ai",
