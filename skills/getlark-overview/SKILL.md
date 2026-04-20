@@ -5,13 +5,13 @@ description: This skill should be used when the user mentions "getlark", "getlar
 
 # getlark-overview
 
-Provide accurate context about the getlark.ai platform and the `larkci` CLI so that code generation, command suggestions, and test authoring align with the real system. Do not invent fields, flags, or resource types — consult `references/concepts.md` when details are needed.
+Provide accurate context about the getlark.ai platform and the `getlark` CLI so that code generation, command suggestions, and test authoring align with the real system. Do not invent fields, flags, or resource types — consult `references/concepts.md` when details are needed.
 
 ## What getlark is
 
 getlark.ai is a platform for authoring and running end-to-end browser tests. Tests are called **workflows**. Users describe a workflow in natural language (target URL + steps); getlark generates an executable test, runs it on demand or on schedule, and auto-repairs when the app under test changes.
 
-The `larkci` CLI (`npm i -g @getlark/cli`) is the primary programmatic surface. It wraps the getlark HTTP API with `X-API-Key` auth. All output is JSON.
+The `getlark` CLI (`npm i -g @getlark/cli`) is the primary programmatic surface. It wraps the getlark HTTP API with `X-API-Key` auth. All output is JSON.
 
 ## Core resources
 
@@ -30,10 +30,10 @@ Detailed field definitions and status values are in `references/concepts.md`.
 Top-level groups:
 
 ```
-larkci workflows { list | get | create | update | archive | unarchive | invoke
+getlark workflows { list | get | create | update | archive | unarchive | invoke
                    | executions | repairs | generations | events }
-larkci workflow-groups { list | get | create | update | delete }
-larkci secret-contexts { list | get | create | update | delete | delete-key }
+getlark workflow-groups { list | get | create | update | delete }
+getlark secret-contexts { list | get | create | update | delete | delete-key }
 ```
 
 Global flags: `--api-key <key>` (or `LARKCI_API_KEY` env), `--api-url <url>` (or `LARKCI_API_URL` env; defaults to `https://api.getlark.ai`).
@@ -64,6 +64,6 @@ Load the reference when answering a question that requires specific field names,
 
 ## Do NOT
 
-- Do not guess workflow IDs, group IDs, or execution IDs — query them first via `/getlark:manage` or `larkci workflows list`.
+- Do not guess workflow IDs, group IDs, or execution IDs — query them first via `/getlark:manage` or `getlark workflows list`.
 - Do not put secrets in workflow descriptions. Route them through `secret-contexts`.
-- Do not fabricate CLI flags. If unsure, run `larkci <cmd> --help` or consult `references/concepts.md`.
+- Do not fabricate CLI flags. If unsure, run `getlark <cmd> --help` or consult `references/concepts.md`.

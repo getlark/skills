@@ -14,7 +14,7 @@ Run one or more getlark workflows and wait for completion, then report results. 
 Accept any of:
 
 - A specific workflow ID (`wf_...`)
-- A workflow name (resolve to ID via `larkci workflows list`)
+- A workflow name (resolve to ID via `getlark workflows list`)
 - A workflow group ID or group name
 - `--all` / "all" to run everything
 
@@ -29,7 +29,7 @@ Based on input shape:
 | Input | Resolution |
 |---|---|
 | Starts with `wf_` | Use directly as `--workflow-ids` |
-| Looks like a name | `larkci workflows list --limit 100`, find match by `name`, use its `id`. If multiple match, ask. |
+| Looks like a name | `getlark workflows list --limit 100`, find match by `name`, use its `id`. If multiple match, ask. |
 | Group ID (`wfl_grp_*` or similar) | Use `--group-id` |
 | Group name | Use `--group-name "<name>"` |
 | `all` / `--all` / unspecified + user said "everything" | Use `--all` |
@@ -39,7 +39,7 @@ Based on input shape:
 Always pass `--wait` by default. Set a timeout that matches the expected run time; `--timeout 600` (10 min) is a reasonable default for a single workflow, scale up for `--all` or large groups.
 
 ```bash
-larkci workflows invoke \
+getlark workflows invoke \
   --workflow-ids <id> \
   --wait \
   --timeout 600
@@ -47,7 +47,7 @@ larkci workflows invoke \
 
 Or for multiple:
 ```bash
-larkci workflows invoke --all --wait --timeout 1800
+getlark workflows invoke --all --wait --timeout 1800
 ```
 
 If the user explicitly says "don't wait" / "fire and forget", drop `--wait`.
@@ -73,9 +73,9 @@ Parse these lines into a concise report for the user.
 
 If any workflow failed, offer — do not auto-execute — follow-ups:
 
-- "Run `larkci workflows executions get <wf_id> <exec_id>` to see step-by-step details?"
-- "Fetch logs with `larkci workflows executions logs <wf_id> <exec_id>`?"
-- "Trigger a repair with `larkci workflows repairs trigger <wf_id>`?"
+- "Run `getlark workflows executions get <wf_id> <exec_id>` to see step-by-step details?"
+- "Fetch logs with `getlark workflows executions logs <wf_id> <exec_id>`?"
+- "Trigger a repair with `getlark workflows repairs trigger <wf_id>`?"
 
 Wait for user confirmation before running any of these.
 
@@ -87,17 +87,17 @@ For any execution, surface: `https://dashboard.getlark.ai/workflows/<wf_id>/exec
 
 **Single workflow by ID:**
 ```bash
-larkci workflows invoke --workflow-ids wf_abc123 --wait
+getlark workflows invoke --workflow-ids wf_abc123 --wait
 ```
 
 **Group by name:**
 ```bash
-larkci workflows invoke --group-name "Checkout Flow" --wait --timeout 1800
+getlark workflows invoke --group-name "Checkout Flow" --wait --timeout 1800
 ```
 
 **Everything:**
 ```bash
-larkci workflows invoke --all --wait --timeout 3600
+getlark workflows invoke --all --wait --timeout 3600
 ```
 
 ## Do NOT

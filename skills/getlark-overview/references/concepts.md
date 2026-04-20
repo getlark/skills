@@ -1,6 +1,6 @@
 # getlark concepts & CLI reference
 
-Authoritative details for the `larkci` CLI and the resources it manages. Load this file when answers require exact field names, status enums, or flag specifics.
+Authoritative details for the `getlark` CLI and the resources it manages. Load this file when answers require exact field names, status enums, or flag specifics.
 
 ## Global CLI options
 
@@ -39,7 +39,7 @@ Exit codes: `0` success · `1` failure · `2` timeout · `3` unexpected error.
 }
 ```
 
-### `larkci workflows` subcommands
+### `getlark workflows` subcommands
 
 | Subcommand | Key flags / args |
 |---|---|
@@ -50,7 +50,7 @@ Exit codes: `0` success · `1` failure · `2` timeout · `3` unexpected error.
 | `archive <workflow_id>` / `unarchive <workflow_id>` | — |
 | `invoke` | `--workflow-ids <id...>` OR `--all` OR `--group-id <id>` OR `--group-name <name>`; `--wait`, `--timeout <seconds>` (default 600), `--verbose` |
 
-### Workflow executions (nested under `larkci workflows`)
+### Workflow executions (nested under `getlark workflows`)
 
 | Subcommand | Args |
 |---|---|

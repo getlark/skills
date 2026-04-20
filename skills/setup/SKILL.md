@@ -7,7 +7,7 @@ argument-hint: "[api-key]"
 
 # setup
 
-Install the `larkci` CLI globally via npm and configure `LARKCI_API_KEY` so subsequent getlark commands work without extra flags. Run this once per machine.
+Install the `getlark` CLI globally via npm and configure `LARKCI_API_KEY` so subsequent getlark commands work without extra flags. Run this once per machine.
 
 ## Inputs
 
@@ -21,24 +21,26 @@ Run in parallel:
 
 - `node --version` (must be ≥ 18)
 - `npm --version`
-- `command -v larkci || echo "not installed"`
+- `command -v getlark || echo "not installed"`
 
 Report findings in one line. If Node is < 18 or missing, stop and tell the user to install Node 18+ first.
 
 ### Step 2 — Install the CLI
 
-If `larkci` is not on `PATH`:
+If `getlark` is not on `PATH`:
 
 ```bash
 npm install -g @getlark/cli
 ```
 
-If `larkci` is already installed, run `larkci --version` and ask if the user wants to upgrade (`npm update -g @getlark/cli`). Do not upgrade without confirmation.
+The package `@getlark/cli` installs a binary called **`getlark`** (not `larkci`).
+
+If `getlark` is already installed, run `getlark --version` and ask if the user wants to upgrade (`npm update -g @getlark/cli`). Do not upgrade without confirmation.
 
 Verify the install:
 
 ```bash
-larkci --version
+getlark --version
 ```
 
 ### Step 3 — Obtain an API key
@@ -92,16 +94,16 @@ Default (`https://api.getlark.ai`) covers all production users.
 After the user confirms they've reloaded their shell, run:
 
 ```bash
-larkci workflows list --limit 1
+getlark workflows list --limit 1
 ```
 
 A JSON response with a `workflows` array (possibly empty) confirms setup. A `401`/`403` means the key is wrong; a network error means `LARKCI_API_URL` is wrong.
 
 ## Success criteria
 
-- `larkci --version` prints a version
+- `getlark --version` prints a version
 - `LARKCI_API_KEY` is present in the user's shell rc
-- `larkci workflows list --limit 1` returns a JSON response
+- `getlark workflows list --limit 1` returns a JSON response
 
 ## Recovery
 

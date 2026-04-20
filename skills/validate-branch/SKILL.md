@@ -55,11 +55,11 @@ The argument wins over the config file.
 Always wait for completion. Use the configured timeout or 600s default.
 
 ```bash
-larkci workflows invoke --all --wait --timeout <seconds>
+getlark workflows invoke --all --wait --timeout <seconds>
 # or
-larkci workflows invoke --workflow-ids <ids...> --wait --timeout <seconds>
+getlark workflows invoke --workflow-ids <ids...> --wait --timeout <seconds>
 # or
-larkci workflows invoke --group-id <id> --wait --timeout <seconds>
+getlark workflows invoke --group-id <id> --wait --timeout <seconds>
 ```
 
 ### Step 5 — Report

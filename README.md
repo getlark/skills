@@ -1,11 +1,11 @@
 # getlark
 
-A Claude Code plugin for onboarding to [getlark.ai](https://getlark.ai) and managing end-to-end test workflows via the `larkci` CLI.
+A Claude Code plugin for onboarding to [getlark.ai](https://getlark.ai) and managing end-to-end test workflows via the `getlark` CLI.
 
 ## Features
 
 - **getlark-overview** — background knowledge that auto-loads when working with getlark
-- **/getlark:setup** — install the `larkci` CLI and configure your API key
+- **/getlark:setup** — install the `getlark` CLI and configure your API key
 - **/getlark:create-workflow** — turn a natural-language test description into a workflow
 - **/getlark:invoke-workflow** — run workflows and wait for results
 - **/getlark:manage** — list / get / update / archive workflows, groups, secret contexts, and more

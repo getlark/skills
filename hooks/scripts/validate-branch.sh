@@ -7,7 +7,7 @@
 #   - the triggering command is not `git commit` / `git push`
 #   - `.claude/getlark.local.md` is missing
 #   - the config's `enabled` field is not `true`
-#   - `larkci` is not on PATH
+#   - `getlark` CLI is not on PATH
 
 set -euo pipefail
 
@@ -59,8 +59,8 @@ if [ "$enabled" != "true" ]; then
   exit 0
 fi
 
-if ! command -v larkci >/dev/null 2>&1; then
-  printf '{"systemMessage":"getlark hook: `larkci` is not installed; skipping branch validation. Run /getlark:setup."}\n'
+if ! command -v getlark >/dev/null 2>&1; then
+  printf '{"systemMessage":"getlark hook: `getlark` CLI is not installed; skipping branch validation. Run /getlark:setup."}\n'
   exit 0
 fi
 
@@ -84,11 +84,11 @@ branch=$(git -C "$project_dir" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "
 set +e
 if [ -n "$workflow_ids" ]; then
   # shellcheck disable=SC2086
-  output=$(larkci workflows invoke --workflow-ids $workflow_ids --wait --timeout "$poll_timeout" 2>&1)
+  output=$(getlark workflows invoke --workflow-ids $workflow_ids --wait --timeout "$poll_timeout" 2>&1)
 elif [ -n "$workflow_group_id" ]; then
-  output=$(larkci workflows invoke --group-id "$workflow_group_id" --wait --timeout "$poll_timeout" 2>&1)
+  output=$(getlark workflows invoke --group-id "$workflow_group_id" --wait --timeout "$poll_timeout" 2>&1)
 else
-  output=$(larkci workflows invoke --all --wait --timeout "$poll_timeout" 2>&1)
+  output=$(getlark workflows invoke --all --wait --timeout "$poll_timeout" 2>&1)
 fi
 rc=$?
 set -e

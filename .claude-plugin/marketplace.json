@@ -8,7 +8,7 @@
     {
       "name": "getlark",
       "source": "./",
-      "description": "Onboard to getlark.ai — create, invoke, and manage end-to-end test workflows via the larkci CLI",
+      "description": "Onboard to getlark.ai — create, invoke, and manage end-to-end test workflows via the getlark CLI",
       "version": "0.1.0",
       "homepage": "https://dashboard.getlark.ai",
       "keywords": ["testing", "e2e", "ci", "getlark", "larkci"]
