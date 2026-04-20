@@ -19,7 +19,14 @@ A Claude Code plugin for onboarding to [getlark.ai](https://getlark.ai) and mana
 
 ## Installation
 
-Install via your Claude Code plugin marketplace, or load locally:
+In Claude Code:
+
+```
+/plugin marketplace add getlark/claude-code-plugin
+/plugin install getlark
+```
+
+Or load locally during development:
 
 ```bash
 claude --plugin-dir /path/to/getlark-plugin
