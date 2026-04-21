@@ -1,6 +1,8 @@
 ---
 name: invoke-workflow
-description: This skill should be used when the user asks to "run a workflow", "invoke a larkci workflow", "run getlark tests", "trigger a test", "run all workflows", or runs `/getlark:invoke-workflow`. Invokes one or more getlark workflows, waits for terminal status, and reports pass/fail summaries.
+description: This skill should be used when the user asks to "run a workflow", "invoke a larkci workflow", "run getlark tests", "trigger a test", "run all workflows", or runs `/getlark:invoke-workflow`. Invokes one or more getlark workflows, waits for terminal status, and reports pass/fail summaries. Prefer `validate-branch` when the user wants to gate a git branch (it picks the right workflows automatically); use `manage` to inspect past executions without kicking off a new run; use `create-workflow` first if no workflow exists yet.
+license: MIT
+compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY` in the environment. Run `/getlark:setup` first if either is missing."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: "[workflow-id | --all | --group <name>]"
 ---

@@ -1,6 +1,8 @@
 ---
 name: manage
-description: This skill should be used when the user asks to "list workflows", "show getlark workflows", "get workflow details", "archive a workflow", "update a workflow", "list workflow groups", "manage secret contexts", "show executions", "show repairs", "show generations", "show events", or runs `/getlark:manage`. Covers read/update/archive operations across all getlark resources and formats CLI JSON as human-friendly tables.
+description: This skill should be used when the user asks to "list workflows", "show getlark workflows", "get workflow details", "archive a workflow", "update a workflow", "list workflow groups", "manage secret contexts", "show executions", "show repairs", "show generations", "show events", or runs `/getlark:manage`. Covers read/update/archive operations across all getlark resources and formats CLI JSON as human-friendly tables. Use `create-workflow` to create new workflows and `invoke-workflow` (or `validate-branch`) to run them — this skill never triggers executions, it only inspects and mutates metadata.
+license: MIT
+compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY` in the environment. Run `/getlark:setup` first if either is missing."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: "[resource] [action] [args...]"
 ---

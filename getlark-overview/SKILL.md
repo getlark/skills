@@ -1,6 +1,8 @@
 ---
 name: getlark-overview
-description: This skill should be used when the user mentions "getlark", "getlark.ai", "larkci", "larkci CLI", "end-to-end test workflow", or asks about authoring, running, or debugging automated tests on the getlark platform. getlark tests any software surface — browser UIs, HTTP APIs, CLIs, shell scripts, data pipelines, or mixed flows. Provides background on getlark concepts (workflows, workflow groups, executions, repairs, generations, secret contexts, events) and points to the other plugin skills for actions.
+description: This skill should be used when the user mentions "getlark", "getlark.ai", "larkci", "larkci CLI", "end-to-end test workflow", or asks about authoring, running, or debugging automated tests on the getlark platform. getlark tests any software surface — browser UIs, HTTP APIs, CLIs, shell scripts, data pipelines, or mixed flows. Provides background on getlark concepts (workflows, workflow groups, executions, repairs, generations, secret contexts, events) and points to the other plugin skills for actions. Use as reference context — defer to `create-workflow`, `invoke-workflow`, `manage`, `validate-branch`, or `setup` whenever the user wants to take an action rather than learn.
+license: MIT
+compatibility: "No runtime requirements — this skill provides reference context only. Other getlark skills require the `getlark` CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY`; run `/getlark:setup` first if they are missing."
 ---
 
 # getlark-overview

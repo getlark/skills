@@ -1,6 +1,8 @@
 ---
 name: setup
-description: This skill should be used when the user asks to "set up getlark", "install larkci", "install the getlark CLI", "configure LARKCI_API_KEY", "authenticate with getlark", or runs `/getlark:setup`. Walks the user through installing @getlark/cli and exporting LARKCI_API_KEY in their shell rc.
+description: This skill should be used when the user asks to "set up getlark", "install larkci", "install the getlark CLI", "configure LARKCI_API_KEY", "authenticate with getlark", or runs `/getlark:setup`. Walks the user through installing @getlark/cli and exporting LARKCI_API_KEY in their shell rc. One-time per machine — skip if `getlark --version` already works and `LARKCI_API_KEY` is already set; defer to the action skills (`create-workflow`, `invoke-workflow`, `manage`, `validate-branch`) in that case.
+license: MIT
+compatibility: "Requires Node.js ≥18 and npm on PATH. Writes to the user's shell rc file (`~/.zshrc` or `~/.bashrc`) to persist `LARKCI_API_KEY`."
 allowed-tools: Bash, Read, Edit, Write
 argument-hint: "[api-key]"
 ---
