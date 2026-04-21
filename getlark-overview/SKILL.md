@@ -1,6 +1,6 @@
 ---
 name: getlark-overview
-description: This skill should be used when the user mentions "getlark", "getlark.ai", "larkci", "larkci CLI", "end-to-end test workflow", or asks about authoring, running, or debugging automated browser tests on the getlark platform. Provides background on getlark concepts (workflows, workflow groups, executions, repairs, generations, secret contexts, events) and points to the other plugin skills for actions.
+description: This skill should be used when the user mentions "getlark", "getlark.ai", "larkci", "larkci CLI", "end-to-end test workflow", or asks about authoring, running, or debugging automated tests on the getlark platform. getlark tests any software surface — browser UIs, HTTP APIs, CLIs, shell scripts, data pipelines, or mixed flows. Provides background on getlark concepts (workflows, workflow groups, executions, repairs, generations, secret contexts, events) and points to the other plugin skills for actions.
 ---
 
 # getlark-overview
@@ -9,7 +9,9 @@ Provide accurate context about the getlark.ai platform and the `getlark` CLI so 
 
 ## What getlark is
 
-getlark.ai is a platform for authoring and running end-to-end browser tests. Tests are called **workflows**. Users describe a workflow in natural language (target URL + steps); getlark generates an executable test, runs it on demand or on schedule, and auto-repairs when the app under test changes.
+getlark.ai is a platform for authoring and running end-to-end tests against *any* software surface — web UIs, HTTP/GraphQL APIs, CLIs, shell scripts, data pipelines, background jobs, or mixed flows that span several of these. Tests are called **workflows**. Users describe a workflow in natural language (target + ordered steps); getlark generates an executable test (browser script, HTTP calls, shell commands, Python, etc. — see artifact types in `references/concepts.md`), runs it on demand or on schedule, and auto-repairs when the system under test changes.
+
+Browser E2E is one common use case, not the only one. Do not assume the target is a web UI unless the user says so.
 
 The `getlark` CLI (`npm i -g @getlark/cli`) is the primary programmatic surface. It wraps the getlark HTTP API with `X-API-Key` auth. All output is JSON.
 
@@ -58,7 +60,7 @@ Load the reference when answering a question that requires specific field names,
 
 ## Writing tests (key guidance)
 
-- A workflow description should include the **target URL** and **ordered steps**. It does not have to be verbose — getlark's generation step fleshes out the runnable test.
+- A workflow description should include the **target** (URL, API base, CLI binary, script path, etc.) and **ordered steps**. It does not have to be verbose — getlark's generation step fleshes out the runnable test.
 - Credentials or tokens referenced by steps must live in a **secret context**, not the description itself. Attach via `--secret-contexts <names...>` at creation.
 - Workflows in `ai_driven` mode tolerate minor UI changes; `deterministic` mode locks behavior to a generated script. Use `ai_driven` unless the user explicitly wants lock-in.
 

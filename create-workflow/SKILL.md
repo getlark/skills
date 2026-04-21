@@ -1,19 +1,22 @@
 ---
 name: create-workflow
-description: This skill should be used when the user asks to "create a workflow", "create a getlark test", "add an end-to-end test", "author a larkci workflow", or runs `/getlark:create-workflow`. Converts a natural-language test description (target URL + ordered steps) into a `getlark workflows create` invocation with an auto-generated name.
+description: This skill should be used when the user asks to "create a workflow", "create a getlark test", "add an end-to-end test", "author a larkci workflow", or runs `/getlark:create-workflow`. Converts a natural-language test description (target + ordered steps; target may be a URL, API endpoint, CLI binary, script, or any other software surface) into a `getlark workflows create` invocation with an auto-generated name.
 allowed-tools: Bash, AskUserQuestion
 argument-hint: "[description]"
 ---
 
 # create-workflow
 
-Turn a short natural-language test description into a new getlark workflow. The user supplies the description (target URL + steps). This skill derives a concise workflow name, surfaces optional settings (mode, secret contexts, group), and calls `getlark workflows create`.
+Turn a short natural-language test description into a new getlark workflow. The user supplies the description (target + steps). This skill derives a concise workflow name, surfaces optional settings (mode, secret contexts, group), and calls `getlark workflows create`.
+
+getlark workflows can test any surface — web UIs, HTTP/GraphQL APIs, CLIs, shell scripts, data pipelines, or mixed flows. Do not assume the target is a browser URL.
 
 ## Inputs
 
-- **Description** (required) — free-form text containing a target URL and ordered steps. Examples:
-  - "Go to https://app.example.com/login, sign in with the `staging` credentials, click 'New project', confirm the modal, assert dashboard loads."
-  - "https://acme.test — add item to cart, checkout as guest, verify order confirmation page."
+- **Description** (required) — free-form text containing a target (URL, API base, CLI binary, script path, etc.) and ordered steps. Examples:
+  - Browser: "Go to https://app.example.com/login, sign in with the `staging` credentials, click 'New project', confirm the modal, assert dashboard loads."
+  - API: "POST https://api.acme.test/v1/orders with `staging_api` creds and a sample cart payload, assert 201 and that the response `order.status` is `pending`."
+  - CLI: "Run `mytool import ./fixtures/sample.csv --dry-run`, assert exit code 0 and stdout contains `3 rows parsed`."
 
 If the user invoked `/getlark:create-workflow <text>`, treat `<text>` as the description. Otherwise ask for it.
 
@@ -21,7 +24,7 @@ If the user invoked `/getlark:create-workflow <text>`, treat `<text>` as the des
 
 ### Step 1 — Collect / confirm the description
 
-Ensure the description contains **a URL** and **at least one action step**. If either is missing, ask one targeted follow-up. Do not pad thin descriptions with invented steps — confirm with the user first.
+Ensure the description contains **a target** (URL, API endpoint, CLI command, script path, etc.) and **at least one action step**. If either is missing, ask one targeted follow-up. Do not pad thin descriptions with invented steps — confirm with the user first.
 
 ### Step 2 — Derive a name
 
@@ -56,7 +59,7 @@ getlark workflows create \
   [--group-id <id>]
 ```
 
-Description is passed **verbatim** — getlark's generation step parses the URL and steps server-side. Do not restructure or bullet-ify it.
+Description is passed **verbatim** — getlark's generation step parses the target and steps server-side. Do not restructure or bullet-ify it.
 
 Note: `--secret-contexts` takes space-separated values (variadic), not comma-separated.
 
