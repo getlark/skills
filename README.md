@@ -1,60 +1,36 @@
-# getlark
+# getlark skills
 
-A Claude Code plugin for onboarding to [getlark.ai](https://getlark.ai) and managing end-to-end test workflows via the `getlark` CLI.
+Agent skills for [getlark](https://getlark.ai) — author, run, and manage end-to-end browser test workflows from your coding agent.
 
-## Features
+Works with Claude Code, Cursor, Codex, OpenCode, Windsurf, Gemini CLI, Copilot, and any other agent supported by Vercel's [`skills`](https://github.com/vercel-labs/skills) ecosystem.
 
-- **getlark-overview** — background knowledge that auto-loads when working with getlark
-- **/getlark:setup** — install the `getlark` CLI and configure your API key
-- **/getlark:create-workflow** — turn a natural-language test description into a workflow
-- **/getlark:invoke-workflow** — run workflows and wait for results
-- **/getlark:manage** — list / get / update / archive workflows, groups, secret contexts, and more
-- **/getlark:validate-branch** — run workflows against the current feature branch
-- **Optional hook** — automatically validate after `git commit`/`git push` when enabled
+## Install
+
+```bash
+npx skills add getlark/skills
+```
+
+This installs the skills in the format your agent expects (Claude `SKILL.md`, Cursor rules, `AGENTS.md`, etc).
+
+Claude Code users can alternatively install the full plugin — which includes these skills plus slash commands and hooks — from the getlark marketplace.
 
 ## Prerequisites
 
-- Node.js ≥ 18
-- A getlark.ai account and API key ([dashboard](https://dashboard.getlark.ai/settings/api-keys))
+The skills shell out to the [`@getlark/cli`](https://www.npmjs.com/package/@getlark/cli) and expect `LARKCI_API_KEY` in your environment. If you haven't set that up yet, invoke the `setup` skill and it will walk you through it.
 
-## Installation
+## Skills
 
-In Claude Code:
+| Skill              | What it does                                                                                                                                              |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getlark-overview` | Background on getlark concepts (workflows, groups, executions, repairs, generations, secret contexts, events). Loaded when you mention getlark or larkci. |
+| `setup`            | Installs `@getlark/cli` and configures `LARKCI_API_KEY` in your shell rc.                                                                                 |
+| `create-workflow`  | Turns a natural-language test description into a `getlark workflows create` invocation.                                                                   |
+| `invoke-workflow`  | Runs one or more workflows, waits for terminal status, reports pass/fail.                                                                                 |
+| `validate-branch`  | Runs configured workflows against the current branch to check for regressions.                                                                            |
+| `manage`           | Read/update/archive workflows, groups, secret contexts, executions, repairs, generations, and events.                                                     |
 
-```
-/plugin marketplace add getlark/claude-code-plugin
-/plugin install getlark
-```
+## Links
 
-Or load locally during development:
-
-```bash
-claude --plugin-dir /path/to/getlark-plugin
-```
-
-Then run `/getlark:setup` to install the CLI and configure credentials.
-
-## Optional: enable the branch-validation hook
-
-Create `.claude/getlark.local.md` at the root of any project where you want the hook active:
-
-```yaml
----
-enabled: true
-# Optional: restrict to specific workflows (default: run all)
-workflow_ids: []
-# Optional: restrict to a workflow group
-workflow_group_id: ""
-# Optional: poll timeout in seconds (default: 600)
-poll_timeout_seconds: 600
----
-```
-
-When enabled, the plugin runs your configured workflows after `git commit` or `git push` and reports pass/fail to Claude.
-
-## Configuration
-
-| Env var | Purpose | Default |
-|---|---|---|
-| `LARKCI_API_KEY` | API key | (required) |
-| `LARKCI_API_URL` | API base URL | `https://api.getlark.ai` |
+- Dashboard: https://dashboard.getlark.ai
+- CLI: https://www.npmjs.com/package/@getlark/cli
+- Claude Code plugin: https://github.com/getlark/claude-code-plugin
