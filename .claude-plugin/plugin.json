@@ -1,7 +1,7 @@
 {
   "name": "getlark",
-  "version": "0.1.0",
-  "description": "Onboard to getlark.ai — create, invoke, and manage end-to-end test workflows via the getlark CLI",
+  "version": "0.1.1",
+  "description": "Natural-language end-to-end tests for any software surface, powered by getlark.ai",
   "author": {
     "name": "Lark",
     "email": "support@getlark.ai",
