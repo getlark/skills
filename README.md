@@ -1,6 +1,6 @@
 # getlark skills
 
-Agent skills for [getlark](https://getlark.ai) — author, run, and manage end-to-end browser test workflows from your coding agent.
+Agent skills for [getlark](https://getlark.ai) — author, run, and manage end-to-end test workflows from your coding agent.
 
 Works with Claude Code, Cursor, Codex, OpenCode, Windsurf, Gemini CLI, Copilot, and any other agent supported by Vercel's [`skills`](https://github.com/vercel-labs/skills) ecosystem.
 
