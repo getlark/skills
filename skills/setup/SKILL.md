@@ -1,15 +1,15 @@
 ---
 name: setup
-description: This skill should be used when the user asks to "set up getlark", "install larkci", "install the getlark CLI", "configure LARKCI_API_KEY", "authenticate with getlark", or runs `/getlark:setup`. Walks the user through installing @getlark/cli and exporting LARKCI_API_KEY in their shell rc. One-time per machine — skip if `getlark --version` already works and `LARKCI_API_KEY` is already set; defer to the action skills (`create-workflow`, `invoke-workflow`, `manage`, `validate-branch`) in that case.
+description: This skill should be used when the user asks to "set up getlark", "install larkci", "install the getlark CLI", "configure GETLARK_API_KEY", "authenticate with getlark", or runs `/getlark:setup`. Walks the user through installing @getlark/cli and authenticating via `getlark login` or by exporting GETLARK_API_KEY in their shell rc. One-time per machine — skip if `getlark --version` already works and the user is authenticated; defer to the action skills (`create-workflow`, `invoke-workflow`, `manage`, `validate-branch`) in that case.
 license: MIT
-compatibility: "Requires Node.js ≥18 and npm on PATH. Writes to the user's shell rc file (`~/.zshrc` or `~/.bashrc`) to persist `LARKCI_API_KEY`."
+compatibility: "Requires Node.js ≥18 and npm on PATH."
 allowed-tools: Bash, Read, Edit, Write
 argument-hint: "[api-key]"
 ---
 
 # setup
 
-Install the `getlark` CLI globally via npm and configure `LARKCI_API_KEY` so subsequent getlark commands work without extra flags. Run this once per machine.
+Install the `getlark` CLI globally via npm and authenticate so subsequent getlark commands work without extra flags. Run this once per machine.
 
 ## Inputs
 
@@ -53,9 +53,15 @@ If the user did not provide a key:
 
 Wait for the user to paste. Never echo the full key back — truncate to `sk_...abcd` when confirming.
 
-### Step 4 — Persist the key in shell rc
+### Step 4 — Authenticate
 
-Detect the user's shell:
+Prefer `getlark login` — it saves credentials to `~/.getlark/config.json` without touching shell rc files:
+
+```bash
+getlark login --api-key <KEY>
+```
+
+If the user prefers an environment variable (e.g. for CI or shell-wide access), export `GETLARK_API_KEY` in their rc file instead. Detect the shell:
 
 ```bash
 echo "$SHELL"
@@ -67,44 +73,38 @@ Map to rc file:
 - `/bin/bash` → `~/.bashrc` on Linux, `~/.bash_profile` on macOS
 - `/usr/bin/fish` → `~/.config/fish/config.fish`
 
-Check whether `LARKCI_API_KEY` is already exported in that file before appending. If not, append:
+Check whether `GETLARK_API_KEY` is already exported in that file before appending. If not, append:
 
 ```bash
 # For bash/zsh:
-echo '\nexport LARKCI_API_KEY="<KEY>"' >> ~/.zshrc
+echo '\nexport GETLARK_API_KEY="<KEY>"' >> ~/.zshrc
 
 # For fish:
-echo '\nset -gx LARKCI_API_KEY "<KEY>"' >> ~/.config/fish/config.fish
+echo '\nset -gx GETLARK_API_KEY "<KEY>"' >> ~/.config/fish/config.fish
 ```
 
 Use the Edit or Write tool rather than `echo` when possible, so the diff is visible. Never commit or stage rc files.
 
 Tell the user to either `source` the rc file or open a new shell. Do NOT run `source` inside the Bash tool — it will not affect the user's interactive shell.
 
-### Step 5 — (Optional) Set a custom API URL
-
-Only if the user mentions staging / self-hosted:
-
-```bash
-export LARKCI_API_URL="https://<host>"
-```
+Note: `LARKCI_API_KEY` is accepted but deprecated — the CLI will warn to rename it to `GETLARK_API_KEY`.
 
 Default (`https://api.getlark.ai`) covers all production users.
 
-### Step 6 — Smoke test
+### Step 5 — Smoke test
 
-After the user confirms they've reloaded their shell, run:
+Run:
 
 ```bash
 getlark workflows list --limit 1
 ```
 
-A JSON response with a `workflows` array (possibly empty) confirms setup. A `401`/`403` means the key is wrong; a network error means `LARKCI_API_URL` is wrong.
+A JSON response with a `workflows` array (possibly empty) confirms setup. A `401`/`403` means the key is wrong; a network error means `GETLARK_API_URL` is wrong.
 
 ## Success criteria
 
 - `getlark --version` prints a version
-- `LARKCI_API_KEY` is present in the user's shell rc
+- Authentication works: either `getlark login` was run or `GETLARK_API_KEY` is in the environment
 - `getlark workflows list --limit 1` returns a JSON response
 
 ## Recovery

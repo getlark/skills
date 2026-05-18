@@ -2,7 +2,7 @@
 name: lark-manage-bulk
 description: This skill should be used when the user wants to create a bunch of workflows in lark in bulk. This is common when the user is either onboarding to lark and currently they have zero or very few tests setup, or if they are trying to increase coverage for their product surface area and want to add a bunch of new tests. Handles the full flow from understanding the product area, generating test cases, writing the import JSON file, validating, and uploading via the CLI jobs functionality.
 license: MIT
-compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY` in the environment. Run `/getlark:setup` first if either is missing."
+compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `GETLARK_API_KEY` in the environment (or a saved profile via `getlark login`). Run `/getlark:setup` first if either is missing."
 allowed-tools: Bash, AskUserQuestion, Write, Read, StrReplace
 argument-hint: "[product area description]"
 ---
@@ -188,7 +188,7 @@ Report the dashboard URL to the user.
 ## Failure modes
 
 - **Validation errors**: Fix the JSON and re-validate. Do not upload without passing validation.
-- **Auth errors on upload**: Verify `LARKCI_API_KEY` is set. Suggest running `/getlark:setup`.
+- **Auth errors on upload**: Verify `GETLARK_API_KEY` is set (or run `getlark login`). Suggest running `/getlark:setup`.
 - **Unknown secret context**: Verify via `getlark secret-contexts list` before including in the file.
 - **Unknown group ID**: Verify via `getlark workflow-groups list` before including in the file.
 

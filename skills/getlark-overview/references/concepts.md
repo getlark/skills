@@ -6,8 +6,11 @@ Authoritative details for the `getlark` CLI and the resources it manages. Load t
 
 | Flag | Env var | Default | Purpose |
 |---|---|---|---|
-| `--api-key <key>` | `LARKCI_API_KEY` | — (required) | API authentication |
-| `--api-url <url>` | `LARKCI_API_URL` | `https://api.getlark.ai` | API base URL |
+| `--api-key <key>` | `GETLARK_API_KEY` | — (required unless using a saved profile) | API authentication |
+| `--api-url <url>` | `GETLARK_API_URL` | `https://api.getlark.ai` | API base URL |
+| `--profile <name>` | — | current profile in `~/.getlark/config.json` | Select a saved config profile |
+
+Note: `LARKCI_API_KEY` and `LARKCI_API_URL` are accepted but deprecated — the CLI will print a warning to rename them.
 
 Exit codes: `0` success · `1` failure · `2` timeout · `3` unexpected error.
 
@@ -107,6 +110,48 @@ Stores named key/value bags. Values are write-only; `get` returns key names only
 | `secret-contexts update <context>` | `--key <k> --value <v>` (repeatable) |
 | `secret-contexts delete <context>` | — |
 | `secret-contexts delete-key <context>` | `--key <k>` |
+
+## Resource: job
+
+Long-running background operation (e.g. bulk workflow import).
+
+```ts
+{
+  id: string;
+  name: string;
+  type: "workflow_import";
+  status: "pending" | "running" | "completed" | "failed" | "cancelled";
+  dashboard_url: string;
+  created_at: string;
+  updated_at: string;
+}
+```
+
+| Subcommand | Key flags / args |
+|---|---|
+| `jobs list` | `--limit <n>` (default 20), `--offset <n>`, `--status <status>` (repeatable) |
+| `jobs get <job_id>` | — |
+| `jobs cancel <job_id>` | — |
+| `jobs upload` | `--name <name>` **(required)**, `--file <path>` **(required)**, `--type <type>` (default `workflow_import`) |
+| `jobs validate` | `--file <path>` **(required)**, `--type <type>` (default `workflow_import`) — validates without creating a job |
+| `jobs create` | `--name <name>` **(required)**, `--input-file <path>` **(required)** — inline JSON alternative to `upload` |
+
+`jobs upload` and `jobs validate` accept a multipart file upload. `jobs create` accepts an inline JSON body. Prefer `upload` for bulk workflow imports. Use `/getlark:manage-bulk` for the full bulk-import workflow.
+
+## Resource: config profile
+
+Named credential set stored in `~/.getlark/config.json`. Managed via `getlark login` / `getlark logout` / `getlark config`.
+
+| Subcommand | Args |
+|---|---|
+| `login` | `--api-key <key>` (skips prompt), `--profile <name>` (default: current or `default`) |
+| `logout` | `--profile <name>` (default: current profile) |
+| `config list` | — lists all profiles, marks current with `*` |
+| `config use <profile>` | — sets the active profile |
+
+Config file location: `~/.getlark/config.json`. Credentials stored per profile: `api_key` (required), `api_url` (optional).
+
+Priority order when resolving credentials: `--api-key` flag > `GETLARK_API_KEY` env > active config profile.
 
 ## Execution / generation / repair status enum
 

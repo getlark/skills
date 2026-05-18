@@ -2,7 +2,7 @@
 name: validate-branch
 description: This skill should be used when the user asks to "validate the branch", "validate this branch", "test this feature branch", "run workflows against this branch", "check if my changes broke anything", or runs `/getlark:validate-branch`. Runs configured getlark workflows against the current branch on demand. Pair with the optional PostToolUse hook for automatic validation after git commit/push. Prefer this over `invoke-workflow` whenever the intent is tied to the current git branch — it selects the right workflows automatically from `.claude/getlark.local.md`; fall back to `invoke-workflow` for ad-hoc runs unrelated to the branch, and to `create-workflow` if no workflows exist yet.
 license: MIT
-compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`), `LARKCI_API_KEY` in the environment, and a git working copy. Run `/getlark:setup` first if the CLI or API key is missing."
+compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`), `GETLARK_API_KEY` in the environment (or a saved profile via `getlark login`), and a git working copy. Run `/getlark:setup` first if the CLI or API key is missing."
 allowed-tools: Bash, Read
 argument-hint: "[workflow-id | group-name]"
 ---

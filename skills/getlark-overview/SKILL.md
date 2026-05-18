@@ -2,7 +2,7 @@
 name: getlark-overview
 description: This skill should be used when the user mentions "getlark", "getlark.ai", "larkci", "larkci CLI", "end-to-end test workflow", or asks about authoring, running, or debugging automated tests on the getlark platform. getlark tests any software surface — browser UIs, HTTP APIs, CLIs, shell scripts, data pipelines, or mixed flows. Provides background on getlark concepts (workflows, workflow groups, executions, repairs, generations, secret contexts, events) and points to the other plugin skills for actions. Use as reference context — defer to `create-workflow`, `invoke-workflow`, `manage`, `validate-branch`, or `setup` whenever the user wants to take an action rather than learn.
 license: MIT
-compatibility: "No runtime requirements — this skill provides reference context only. Other getlark skills require the `getlark` CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY`; run `/getlark:setup` first if they are missing."
+compatibility: "No runtime requirements — this skill provides reference context only. Other getlark skills require the `getlark` CLI (`npm install -g @getlark/cli`) and `GETLARK_API_KEY` (or a saved profile via `getlark login`); run `/getlark:setup` first if they are missing."
 ---
 
 # getlark-overview
@@ -26,6 +26,8 @@ The `getlark` CLI (`npm i -g @getlark/cli`) is the primary programmatic surface.
 - **repair** — auto-fixing a workflow after the underlying UI changed.
 - **secret-context** — named bag of credentials (keys + values) that a workflow can reference for auth, API keys, etc.
 - **event** — unified log entry across generation/execution/repair for a workflow.
+- **job** — a long-running background operation (e.g. bulk workflow import). Status: `pending`/`running`/`completed`/`failed`/`cancelled`. Each job has a `dashboard_url` for tracking.
+- **config profile** — named set of credentials stored in `~/.getlark/config.json` via `getlark login`. Allows switching between multiple API keys/environments.
 
 Detailed field definitions and status values are in `references/concepts.md`.
 
@@ -38,9 +40,14 @@ getlark workflows { list | get | create | update | archive | unarchive | invoke
                    | executions | repairs | generations | events }
 getlark workflow-groups { list | get | create | update | delete }
 getlark secret-contexts { list | get | create | update | delete | delete-key }
+getlark jobs { list | get | create | upload | validate | cancel }
+getlark config { list | use <profile> }
+getlark login / logout
 ```
 
-Global flags: `--api-key <key>` (or `LARKCI_API_KEY` env), `--api-url <url>` (or `LARKCI_API_URL` env; defaults to `https://api.getlark.ai`).
+Global flags: `--api-key <key>` (or `GETLARK_API_KEY` env), `--api-url <url>` (or `GETLARK_API_URL` env; defaults to `https://api.getlark.ai`), `--profile <name>` (select a saved config profile).
+
+Note: `LARKCI_API_KEY` / `LARKCI_API_URL` still work but are deprecated — the CLI will warn to rename them.
 
 Exit codes: `0` success, `1` failure, `2` timeout, `3` unexpected error.
 
@@ -53,7 +60,8 @@ When the user expresses one of these intents, defer to (or suggest running) the 
 | Install/configure CLI, set API key | `/getlark:setup` |
 | Author a new end-to-end test | `/getlark:create-workflow` |
 | Run a workflow, wait for result | `/getlark:invoke-workflow` |
-| List/inspect/update/archive resources | `/getlark:manage` |
+| List/inspect/update/archive resources; check job status | `/getlark:manage` |
+| Bulk-import workflows from a JSON file | `/getlark:manage-bulk` |
 | Test the current feature branch | `/getlark:validate-branch` |
 
 ## When to load `references/concepts.md`
