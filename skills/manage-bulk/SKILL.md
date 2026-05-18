@@ -55,6 +55,8 @@ Based on the product area and the coverage gaps identified in Step 2, develop a 
 
 For each test case, write a clear, actionable description that includes the target and ordered steps. The description is what the AI agent reads at runtime to perform the test — be specific enough that someone unfamiliar with the product could follow the steps.
 
+**Choosing mode**: Prefer `deterministic` when possible — deterministic tests are cheaper and faster to run. Use `ai_driven` only when the test requires adaptive behavior (e.g., dynamic content, unpredictable UI states, flows that change frequently). A good default split is mostly deterministic with a handful of ai_driven tests for flows where flexibility is genuinely needed.
+
 ### Step 4 — Write the import JSON file
 
 Create a JSON file (default: `workflows-import.json` in the current working directory) that follows the `workflow_import` schema:
@@ -76,7 +78,7 @@ Create a JSON file (default: `workflows-import.json` in the current working dire
 Schema rules:
 - `name` (string, required) — concise, Title-Case name (3–8 words) capturing the test intent.
 - `description` (string, required) — full natural-language test steps. Include the target, actions, and assertions. This is what the AI agent uses to execute the test.
-- `mode` (required) — `"ai_driven"` (default, tolerates minor UI changes) or `"deterministic"` (locked to generated script). Use `ai_driven` unless the user explicitly needs deterministic behavior.
+- `mode` (required) — `"deterministic"` (locked to generated script, cheaper and faster) or `"ai_driven"` (tolerates minor UI changes, more flexible). Prefer `deterministic` where possible; use `ai_driven` only for flows that genuinely need adaptive behavior.
 - `secret_contexts` (array of strings or null, optional) — names of secret contexts the workflow needs for auth/tokens.
 - `group_id` (string or null, optional) — workflow group ID to assign the workflow to.
 
