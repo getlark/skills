@@ -2,14 +2,14 @@
 name: manage
 description: This skill should be used when the user asks to "list workflows", "show getlark workflows", "get workflow details", "archive a workflow", "update a workflow", "list workflow groups", "manage secret contexts", "show executions", "show repairs", "show generations", "show events", or runs `/getlark:manage`. Covers read/update/archive operations across all getlark resources and formats CLI JSON as human-friendly tables. Use `create-workflow` to create new workflows and `invoke-workflow` (or `validate-branch`) to run them — this skill never triggers executions, it only inspects and mutates metadata.
 license: MIT
-compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY` in the environment. Run `/getlark:setup` first if either is missing."
+compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `GETLARK_API_KEY` in the environment (or a saved profile via `getlark login`). Run `/getlark:setup` first if either is missing."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: "[resource] [action] [args...]"
 ---
 
 # manage
 
-Inspect and mutate getlark resources via the `getlark` CLI, then render JSON output as a readable table for the user. Applies to: workflows, workflow-groups, secret-contexts, executions, repairs, generations, and events.
+Inspect and mutate getlark resources via the `getlark` CLI, then render JSON output as a readable table for the user. Applies to: workflows, workflow-groups, secret-contexts, executions, repairs, generations, events, jobs, and config profiles.
 
 ## Resource/action matrix
 
@@ -22,8 +22,10 @@ Inspect and mutate getlark resources via the `getlark` CLI, then render JSON out
 | workflows/events | list |
 | workflow-groups | list, get, create, update, delete |
 | secret-contexts | list, get, create, update, delete, delete-key |
+| jobs | list, get, cancel |
+| config (profiles) | list, use |
 
-Creation of workflows lives in `/getlark:create-workflow`, not here. Invocation lives in `/getlark:invoke-workflow`.
+Creation of workflows lives in `/getlark:create-workflow`, not here. Invocation lives in `/getlark:invoke-workflow`. Bulk workflow imports (jobs upload/validate) live in `/getlark:manage-bulk`.
 
 ## Procedure
 
@@ -41,6 +43,12 @@ Examples:
 | "what secrets are in the staging context" | `getlark secret-contexts get staging` |
 | "show last execution of wf_abc" | `getlark workflows executions list wf_abc --limit 1` → `executions get` |
 | "show repair history for wf_abc" | `getlark workflows repairs list wf_abc` |
+| "list jobs" | `getlark jobs list` |
+| "list pending jobs" | `getlark jobs list --status pending` |
+| "check status of job job_abc" | `getlark jobs get job_abc` |
+| "cancel job job_abc" | `getlark jobs cancel job_abc` (confirm first) |
+| "list my profiles" | `getlark config list` |
+| "switch to staging profile" | `getlark config use staging` |
 
 If the user refers to a resource by name (not ID), resolve via the corresponding `list` call first.
 
@@ -70,11 +78,19 @@ The CLI emits pretty-printed JSON. Convert it to a compact, human-readable table
 
 **repairs list / generations list / events list** — `id`, `status`, `started_at`, `stopped_at`
 
+**jobs list** — `id`, `name`, `type`, `status`, `created_at`; include `dashboard_url` as a clickable link
+
+**jobs get** — key/value, highlight `status`, `type`; always include `dashboard_url` as a link
+
+**config list** — table of profiles: mark current with `*`, columns `name`, `api_url` (or "(default)"), masked `api_key`
+
 Drop timestamps that are null and ISO-trim to minute precision when space is tight. For long lists (>15 rows), show top N and note total.
 
 ### Step 4 — Offer the dashboard link
 
-Include `https://dashboard.getlark.ai/workflows/<id>` (or relevant subpath) after the table so the user can click through.
+Include the relevant dashboard URL after the table so the user can click through:
+- Workflows: `https://dashboard.getlark.ai/workflows/<id>`
+- Jobs: `https://dashboard.getlark.ai/jobs/<id>` (or use the `dashboard_url` field from the API response directly)
 
 ## Pagination
 

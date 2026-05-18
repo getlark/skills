@@ -2,7 +2,7 @@
 name: create-workflow
 description: This skill should be used when the user asks to "create a workflow", "create a getlark test", "add an end-to-end test", "author a larkci workflow", or runs `/getlark:create-workflow`. Converts a natural-language test description (target + ordered steps; target may be a URL, API endpoint, CLI binary, script, or any other software surface) into a `getlark workflows create` invocation with an auto-generated name. Prefer `manage` when the user wants to update or archive an existing workflow, and `invoke-workflow` when they want to run one — this skill only *creates* new workflows.
 license: MIT
-compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `LARKCI_API_KEY` in the environment. Run `/getlark:setup` first if either is missing."
+compatibility: "Requires the getlark CLI (`npm install -g @getlark/cli`) and `GETLARK_API_KEY` in the environment (or a saved profile via `getlark login`). Run `/getlark:setup` first if either is missing."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: "[description]"
 ---

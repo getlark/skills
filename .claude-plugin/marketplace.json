@@ -9,7 +9,7 @@
       "name": "getlark",
       "source": "./",
       "description": "Natural-language end-to-end tests for any software surface, powered by getlark.ai",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "homepage": "https://dashboard.getlark.ai",
       "keywords": ["testing", "e2e", "ci", "getlark", "larkci"]
     }
