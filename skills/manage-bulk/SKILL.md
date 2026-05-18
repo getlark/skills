@@ -57,6 +57,8 @@ For each test case, write a clear, actionable description that includes the targ
 
 **Choosing mode**: Prefer `deterministic` when possible — deterministic tests are cheaper and faster to run. Use `ai_driven` only when the test requires adaptive behavior (e.g., dynamic content, unpredictable UI states, flows that change frequently). A good default split is mostly deterministic with a handful of ai_driven tests for flows where flexibility is genuinely needed.
 
+**Organizing with groups**: Use workflow groups to keep the new tests organized by product area or feature. Check existing groups via `getlark workflow-groups list`. If a relevant group already exists, assign the new workflows to it using `group_id`. If none fits, suggest creating a new group (e.g., "Checkout Flow", "User Management API") and use its ID in the import file. Well-organized groups make it easy to invoke all related tests together via `getlark workflows invoke --group-name "..."` and keep the dashboard navigable as coverage grows.
+
 ### Step 4 — Write the import JSON file
 
 Create a JSON file (default: `workflows-import.json` in the current working directory) that follows the `workflow_import` schema:
