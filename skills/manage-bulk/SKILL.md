@@ -192,6 +192,7 @@ Report the dashboard URL to the user.
 
 ## Do NOT
 
+- Do not call `getlark jobs upload` more than once for the same file. Each call creates a separate job — calling it twice will import the workflows twice, resulting in duplicates. If the upload succeeded (returned a job ID and dashboard URL), do not retry it.
 - Do not upload without user approval of the test cases.
 - Do not skip the validation step — always run `getlark jobs validate` before uploading.
 - Do not hardcode secrets or API keys in workflow descriptions. Use secret contexts.
