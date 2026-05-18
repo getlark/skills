@@ -27,9 +27,25 @@ Ask the user to describe the product area they want to create test workflows for
 
 If the user invoked the skill with a description already, use that as the starting point and ask only clarifying questions for gaps.
 
-### Step 2 — Research and generate test cases
+### Step 2 — Assess existing coverage
 
-Based on the product area, develop a comprehensive set of test cases. Think about:
+Before generating new test cases, fetch all existing workflows to understand what coverage already exists:
+
+```bash
+getlark workflows list --limit 100
+```
+
+If there are more than 100 workflows, paginate with `--offset` until all are fetched. Summarize the existing coverage for the user:
+
+- Group workflows by feature area or theme (infer from names/descriptions)
+- Highlight which areas of the product already have tests
+- Identify gaps — areas the user mentioned in Step 1 that have no existing workflows
+
+This prevents duplicate coverage and helps focus the new test cases on genuine gaps. If the user's target product area is already well-covered, let them know and ask whether they want to supplement with edge cases or shift focus to a different area.
+
+### Step 3 — Research and generate test cases
+
+Based on the product area and the coverage gaps identified in Step 2, develop a comprehensive set of test cases. Think about:
 
 - **Happy paths** — core user journeys that must always work (login, checkout, CRUD operations, etc.)
 - **Edge cases** — boundary conditions, empty states, max-length inputs, concurrent actions
@@ -39,7 +55,7 @@ Based on the product area, develop a comprehensive set of test cases. Think abou
 
 For each test case, write a clear, actionable description that includes the target and ordered steps. The description is what the AI agent reads at runtime to perform the test — be specific enough that someone unfamiliar with the product could follow the steps.
 
-### Step 3 — Write the import JSON file
+### Step 4 — Write the import JSON file
 
 Create a JSON file (default: `workflows-import.json` in the current working directory) that follows the `workflow_import` schema:
 
@@ -66,7 +82,7 @@ Schema rules:
 
 No additional properties are accepted.
 
-### Step 4 — Review and iterate with the user
+### Step 5 — Review and iterate with the user
 
 Present the generated test cases to the user in a readable format (table or numbered list showing name + summary of what each test covers). Ask them to review and suggest changes:
 
@@ -77,7 +93,7 @@ Present the generated test cases to the user in a readable format (table or numb
 
 Iterate on the JSON file based on feedback. Continue until the user confirms the test cases are ready for import. Do not proceed to validation/upload without explicit user approval.
 
-### Step 5 — Validate and upload
+### Step 6 — Validate and upload
 
 Once the user approves, validate the file first:
 
@@ -100,7 +116,7 @@ getlark jobs upload --name "<descriptive job name>" --file ./workflows-import.js
 
 Use a descriptive job name that reflects what's being imported (e.g., "Import Checkout Flow Tests" or "Onboarding - User Management API Coverage").
 
-### Step 6 — Report result
+### Step 7 — Report result
 
 The upload command returns the job resource as JSON. Extract and report:
 
